@@ -44,14 +44,14 @@ contract('MosaicoContract', accounts => {
             //act
             let totalSupply = await contract.totalSupply();
             //assert
-            totalSupply.eq(_totalSupply);
+            assert.isTrue(totalSupply.eq(_totalSupply));
         });
         
         it('creator has all tokens', async function () {
             //act
             let balance = await contract.balanceOf(accounts[0]);
             //assert
-            balance.eq(_totalSupply);
+            assert.isTrue(balance.eq(_totalSupply));
         });
 
     });
@@ -66,11 +66,11 @@ contract('MosaicoContract', accounts => {
             await contract.transfer(accountToReceive, countToSend);
             //assert
             let balance = await contract.balanceOf(accountToReceive);
-            balance.eq(countToSend);            
+            assert.isTrue(balance.eq(countToSend));            
             let ownerBalance = await contract.balanceOf(owner);
-            ownerBalance.eq(_totalSupply.sub(countToSend));
+            assert.isTrue(ownerBalance.eq(_totalSupply.sub(countToSend)));
             let totalSupply = await contract.totalSupply();
-            totalSupply.eq(_totalSupply);
+            assert.isTrue(totalSupply.eq(_totalSupply));
         });
 
         it('should send tokens to another account', async function () {
@@ -81,7 +81,7 @@ contract('MosaicoContract', accounts => {
             await contract.transfer(accountToReceive, countToSend);
             //assert
             let balance = await contract.balanceOf(accountToReceive);
-            balance.eq(countToSend);
+            assert.isTrue(balance.eq(countToSend));
         });
 
         it('should not send tokens if no allowance for owner', async function () {
@@ -126,7 +126,7 @@ contract('MosaicoContract', accounts => {
             await contract.transferFrom(owner, accountToReceive, countToSend);
             //assert
             let balance = await contract.balanceOf(accountToReceive);
-            balance.eq(countToSend);
+            assert.isTrue(balance.eq(countToSend));
         });
 
         it('should send tokens if allowance', async function () {
@@ -139,7 +139,7 @@ contract('MosaicoContract', accounts => {
             await contract.transferFrom(accounts[0], accountToReceive, countToSend, {from: accountToSend});
             //assert
             let balance = await contract.balanceOf(accountToReceive);
-            balance.eq(countToSend);
+            assert.isTrue(balance.eq(countToSend));
         });
     });
 
@@ -256,7 +256,7 @@ contract('MosaicoContract', accounts => {
                 }
               }, 'The event is emitted'
             );
-            totalSupply.eq(_totalSupply.sub(burnQuantity));
+            assert.isTrue(totalSupply.eq(_totalSupply.sub(burnQuantity)));
         });
 
         it('should fail when try burn more then address balance', async function () {
@@ -300,8 +300,8 @@ contract('MosaicoContract', accounts => {
                 }
               }, 'The event is emitted'
             );
-            totalSupply.eq(newTotalSupply);
-            ownerBalance.eq(newTotalSupply);
+            assert.isTrue(totalSupply.eq(newTotalSupply));
+            assert.isTrue(ownerBalance.eq(newTotalSupply));
         });
 
         it('should fail when not owner try mint', async function () {
